@@ -1,0 +1,145 @@
+global !p
+def create_cpr(snip):
+    # retrieving single line from current string and treat it like tabstops
+    # count
+    placeholders_amount = int(snip.buffer[snip.line].strip())
+
+    # erase current line
+    snip.buffer[snip.line] = ''
+
+    # create anonymous snippet with expected content and number of tabstops
+    anon_snippet_body = '\t/**\n\t* '
+    anon_snippet_body += '\n\t* @param '.join(['$' + str(i+1)
+                                    for i in range(placeholders_amount + 1)])
+    anon_snippet_body += '\n\t* @return '
+    anon_snippet_body += '$'
+    anon_snippet_body += str(placeholders_amount + 2)
+    anon_snippet_body += '\n\t*/'
+
+    # expand anonymous snippet
+    snip.expand_anon(anon_snippet_body)
+
+def create_cp(snip):
+    # retrieving single line from current string and treat it like tabstops
+    # count
+    placeholders_amount = int(snip.buffer[snip.line].strip())
+
+    # erase current line
+    snip.buffer[snip.line] = ''
+
+    # create anonymous snippet with expected content and number of tabstops
+    anon_snippet_body = '\t/**\n\t* '
+    anon_snippet_body += '\n\t* @param '.join(['$' + str(i+1)
+                                    for i in range(placeholders_amount + 1)])
+    anon_snippet_body += '\n\t*/'
+
+    # expand anonymous snippet
+    snip.expand_anon(anon_snippet_body)
+endglobal
+
+post_jump "create_cp(snip)"
+snippet "cp(\d+)" "comment + params + return" br
+`!p snip.rv = match.group(1)`
+endsnippet
+
+post_jump "create_cpr(snip)"
+snippet "cpr(\d+)" "comment + params + return" br
+`!p snip.rv = match.group(1)`
+endsnippet
+
+snippet "cr" "comment + return" br
+/**
+* $1
+* @return $2
+*/
+endsnippet
+
+snippet "c" "comment" br
+/**
+* $1
+*/
+endsnippet
+
+snippet fileblo "" bA
+/*
+* @author Cole Van Verth
+* @pengo cverth
+* @email colevanverth@gmail.com
+* @file `!p snip.rv = snip.fn`
+* @assignment ${1:no}: ${2:name}
+*/
+endsnippet
+
+snippet print "" bA
+std::cout << ${1} << std::endl; 
+endsnippet
+
+snippet s
+	std::
+endsnippet
+
+snippet for "" bA
+for (${1}; ${2}; ${3}) {
+	${4}
+}
+endsnippet
+
+snippet intmain "" bA
+int main() {
+	${1}
+}
+endsnippet
+
+snippet incf "" bA
+#include "${1}"
+endsnippet
+
+snippet incs "" bA
+#include <${1}>
+endsnippet
+
+snippet if "" bA
+if (${1}) {
+	${2}
+}
+endsnippet
+
+snippet else "" bA
+else {
+	${1}
+}
+endsnippet
+
+snippet ei "" bA
+else if (${1}) {
+	${2}
+}
+endsnippet
+
+snippet while "" bA
+while (${1}) {
+	${2}
+}
+endsnippet
+
+snippet class "" bA
+class ${1:className} {
+public:
+
+	${2}
+
+private:
+
+
+};
+endsnippet
+
+snippet po "" bA
+#pragma once
+endsnippet
+
+snippet range "" bA
+for (auto $1 : $2) {
+	$3
+}
+endsnippet
