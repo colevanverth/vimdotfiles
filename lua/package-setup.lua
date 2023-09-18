@@ -47,7 +47,8 @@ require("lazy").setup({
            })
        end
    },
-  "unblevable/quick-scope"
+  "unblevable/quick-scope", 
+  "nvim-tree/nvim-tree.lua"
 })
 
 -- Telescope setup.
@@ -57,3 +58,27 @@ vim.keymap.set('n', '<leader>tg', builtin.git_files, {})
 
 -- Colorscheme setup.
 vim.cmd("colorscheme kanagawa")
+
+-- File explorer setup. 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    width = 30,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
